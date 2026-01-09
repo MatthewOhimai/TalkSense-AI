@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-accent: #f59e0b;
+  --color-background: #ffffff;
+  --color-text-main: #374151; /* Softer black for body */
+  --color-text-header: #0f172a; /* Pure black for headers */
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+:root {
+  --primary: #2563eb;
+  --accent: #f59e0b;
+  --background: #ffffff;
+  --text: #374151;
+  
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6; /* Increased default line height */
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Markdown Prose Styles */
+.prose {
+  max-width: none;
+  color: var(--color-text-main);
+  line-height: 1.75;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  color: var(--color-text-header);
+  font-weight: 800;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.prose h3 { font-size: 1.25rem; }
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose strong {
+  color: var(--color-text-header);
+  font-weight: 700;
+}
+
+.prose ul, .prose ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose code {
+  background: #f1f5f9;
+  color: #ef4444;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, monospace;
+}
+
+.prose pre {
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}

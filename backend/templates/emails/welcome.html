@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to TalkSense</title>
+    <style>
+        body { margin: 0; padding: 0; width: 100% !important; background-color: #f8fafc; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; line-height: 1.6; }
+        .wrapper { width: 100%; table-layout: fixed; background-color: #f8fafc; padding: 40px 0; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
+        .hero { padding: 48px 40px 32px; text-align: center; }
+        .logo { display: inline-block; width: 48px; height: 48px; line-height: 48px; background: #4f46e5; color: #ffffff; font-size: 20px; font-weight: 800; border-radius: 12px; margin-bottom: 24px; text-align: center; }
+        h1 { margin: 0 0 12px; font-size: 30px; font-weight: 800; line-height: 1.2; color: #0f172a; letter-spacing: -0.02em; }
+        .subtext { font-size: 16px; color: #64748b; margin-bottom: 0; }
+        .content { padding: 0 40px 40px; }
+        .cta-container { text-align: center; padding: 24px 0; }
+        .button { display: inline-block; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; padding: 16px 36px; border-radius: 14px; font-weight: 600; font-size: 16px; }
+        .section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin: 32px 0 16px; }
+        .feature-item { margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; }
+        .feature-item:last-child { border: none; }
+        .feature-icon { font-size: 20px; margin-right: 12px; display: inline-block; vertical-align: middle; }
+        .feature-text { font-size: 15px; color: #475569; display: inline-block; vertical-align: middle; }
+        .footer { padding: 32px 40px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; text-align: center; }
+        .footer-text { font-size: 13px; color: #94a3b8; margin-bottom: 12px; }
+        .footer-links { font-size: 13px; color: #64748b; font-weight: 500; }
+        .footer-links a { color: #4f46e5; text-decoration: none; margin: 0 8px; }
+        .copyright { margin-top: 24px; font-size: 12px; color: #94a3b8; }
+        .personalized { color: #4f46e5; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="hero">
+                <div class="logo">TS</div>
+                <h1>Build smarter AI conversations in minutes.</h1>
+                <p class="subtext">Welcome aboard, {% if first_name %}<span class="personalized">{{ first_name }}</span> 👋{% else %}King 👋{% endif %}</p>
+            </div>
+
+            <div class="content">
+                <p>Thanks for joining TalkSense! You're now equipped with a powerful platform to build, test, and deploy AI-driven conversations that feel human.</p>
+                
+                <p class="muted" style="margin-top: -10px;">Account: {{ email }}</p>
+
+                <div class="cta-container">
+                    <a href="{{ app_url|default:'#' }}" class="button">Launch TalkSense</a>
+                </div>
+
+                <div class="section-title">What you can do next</div>
+                
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    <span class="feature-text"><strong>Create your first AI conversation</strong> — Start building logic and flows in seconds.</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🧪</span>
+                    <span class="feature-text"><strong>Test responses in real-time</strong> — Ensure your AI is accurate and intentional.</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔐</span>
+                    <span class="feature-text"><strong>Manage API keys & integrations</strong> — Connect your bots to any service or app.</span>
+                </div>
+
+                <p style="margin-top: 40px; text-align: center;" class="muted">
+                    “Did I make the right choice signing up?”<br>
+                    <strong>Yes. You’re about to build something powerful.</strong>
+                </p>
+            </div>
+
+            <div class="footer">
+                <p class="footer-text">Need help? We're here for you.</p>
+                <div class="footer-links">
+                    <a href="{{ app_url|default:'#' }}">Dashboard</a>
+                    •
+                    <a href="{{ app_url|default:'#' }}/docs">Docs</a>
+                    •
+                    <a href="mailto:support@talksense.com">Support</a>
+                </div>
+                <div class="copyright">
+                    © {{ now.year|default:"2026" }} TalkSense — Built for modern AI teams
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
