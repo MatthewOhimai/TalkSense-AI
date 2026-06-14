@@ -27,6 +27,13 @@ import { Input } from "../ui/Input";
 import { cn } from "../../lib/utils";
 import ShareModal from "../chat/ShareModal";
 
+const formatSessionDate = (value) => {
+  if (!value) return "No date";
+  const parsedDate = new Date(value);
+  if (isNaN(parsedDate.getTime())) return "No date";
+  return parsedDate.toLocaleDateString();
+};
+
 const SidebarItem = (props) => {
   const { icon: Icon, label, to, active, collapsed } = props;
   return (
@@ -70,7 +77,7 @@ const SessionItem = ({ session, active, onPin, onRename, onArchive, onDelete, on
       <Link
         to={`/chat/${session.id}`}
         className={cn(
-          "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-200",
+          "flex items-start gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-200",
           active
             ? "bg-blue-50 text-blue-700 font-semibold shadow-sm"
             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -84,8 +91,14 @@ const SessionItem = ({ session, active, onPin, onRename, onArchive, onDelete, on
             </div>
           )}
         </div>
-        {!active && <span className="truncate flex-1">{session.title || "Untitled Chat"}</span>}
-        {active && <span className="truncate flex-1">{session.title || "Untitled Chat"}</span>}
+        <div className="flex-1 min-w-0">
+          <span className="truncate block">{session.title || "Untitled Chat"}</span>
+          <div className="mt-0.5 text-[10px] font-medium text-slate-400 flex items-center gap-2">
+            <span>{formatSessionDate(session.created_at)}</span>
+            <span aria-hidden="true">•</span>
+            <span>{session.message_count ?? 0} msgs</span>
+          </div>
+        </div>
       </Link>
 
       <button
