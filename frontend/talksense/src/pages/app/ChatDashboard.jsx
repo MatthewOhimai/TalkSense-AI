@@ -13,6 +13,7 @@ import {
   ThumbsDown,
   Sparkles,
   Info,
+  Search,
   ChevronDown,
   ChevronUp,
   Edit2,
@@ -105,6 +106,7 @@ const ChatMessageItem = ({ message, user, handleCopy, handleRate, ratingLoading,
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce"></span>
+                <span className="text-xs text-slate-500 ml-2">AI is typing...</span>
              </div>
           )}
 
@@ -189,6 +191,9 @@ const ChatDashboard = () => {
   const [editingMessage, setEditingMessage] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [useRag, setUseRag] = useState(true);
+  const [temperature, setTemperature] = useState(0.7);
   const textareaRef = useRef(null);
 
   const suggestions = [
@@ -369,8 +374,8 @@ const ChatDashboard = () => {
           {
             session_id: currentSessionId,
             content: messageContent,
-            use_rag: true,
-            temperature: 0.7
+            use_rag: useRag,
+            temperature
           },
           (chunk) => {
             // Update the specific assistant message content
@@ -451,6 +456,12 @@ const ChatDashboard = () => {
     toast.success("Copied to clipboard!", { position: "top-center" });
   };
 
+  const filteredMessages = messages.filter((message) => {
+    if (!searchQuery.trim()) return true;
+    const content = String(message.content || "").toLowerCase();
+    return content.includes(searchQuery.toLowerCase());
+  });
+
   return (
     <div className="h-full flex flex-col relative bg-[#F9FAFB]">
       
@@ -470,6 +481,22 @@ const ChatDashboard = () => {
             <Share2 className="w-4 h-4" />
             Share
           </button>
+        </div>
+      )}
+
+      {messages.length > 0 && (
+        <div className="px-4 py-3 md:px-8 border-b border-slate-100 bg-white/70">
+          <div className="max-w-4xl mx-auto relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search messages in this session..."
+              aria-label="Search messages in this session"
+              className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+            />
+          </div>
         </div>
       )}
       
@@ -530,7 +557,7 @@ const ChatDashboard = () => {
           )}
 
           {/* Message List */}
-          {messages.map((message) => (
+          {filteredMessages.map((message) => (
             <ChatMessageItem 
               key={message.id}
               message={message}
@@ -542,12 +569,53 @@ const ChatDashboard = () => {
               onShare={handleShare}
             />
           ))}
+          {messages.length > 0 && filteredMessages.length === 0 && (
+            <div className="text-center py-16 text-slate-500 text-sm">
+              No messages match your search.
+            </div>
+          )}
         </div>
       </div>
 
       {/* Input Area */}
       <div className="p-4 md:p-6 bg-transparent">
         <div className="max-w-4xl mx-auto">
+          <div className="mb-3 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white/80 px-4 py-3 md:flex-row md:items-center md:justify-between">
+            <button
+              type="button"
+              onClick={() => setUseRag((prev) => !prev)}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors w-fit",
+                useRag
+                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                  : "bg-slate-50 text-slate-600 border border-slate-200"
+              )}
+              aria-pressed={useRag}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              {useRag ? "RAG enabled" : "RAG disabled"}
+            </button>
+
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <label htmlFor="temperature" className="text-xs font-semibold text-slate-600 whitespace-nowrap">
+                Temperature
+              </label>
+              <input
+                id="temperature"
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={temperature}
+                onChange={(e) => setTemperature(Number(e.target.value))}
+                className="w-full md:w-36"
+                aria-label="Temperature control"
+              />
+              <span className="text-xs font-semibold text-slate-500 min-w-8 text-right">
+                {temperature.toFixed(1)}
+              </span>
+            </div>
+          </div>
           <form 
             onSubmit={handleSendMessage}
             className={cn(
