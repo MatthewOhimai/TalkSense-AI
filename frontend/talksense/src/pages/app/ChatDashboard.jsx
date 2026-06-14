@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../../components/ui/Button";
@@ -106,7 +106,8 @@ const ChatMessageItem = ({ message, user, handleCopy, handleRate, ratingLoading,
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                 <span className="w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-bounce"></span>
-                <span className="text-xs text-slate-500 ml-2">AI is typing...</span>
+                <span className="sr-only" role="status" aria-live="polite">AI is typing...</span>
+                <span className="text-xs text-slate-500 ml-2" aria-hidden="true">AI is typing...</span>
              </div>
           )}
 
@@ -456,10 +457,14 @@ const ChatDashboard = () => {
     toast.success("Copied to clipboard!", { position: "top-center" });
   };
 
+  const normalizedSearchQuery = useMemo(
+    () => searchQuery.trim().toLowerCase(),
+    [searchQuery]
+  );
   const filteredMessages = messages.filter((message) => {
-    if (!searchQuery.trim()) return true;
+    if (!normalizedSearchQuery) return true;
     const content = String(message.content || "").toLowerCase();
-    return content.includes(searchQuery.toLowerCase());
+    return content.includes(normalizedSearchQuery);
   });
 
   return (
@@ -609,7 +614,6 @@ const ChatDashboard = () => {
                 value={temperature}
                 onChange={(e) => setTemperature(Number(e.target.value))}
                 className="w-full md:w-36"
-                aria-label="Temperature control"
               />
               <span className="text-xs font-semibold text-slate-500 min-w-8 text-right">
                 {temperature.toFixed(1)}

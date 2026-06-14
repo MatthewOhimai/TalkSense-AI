@@ -27,6 +27,13 @@ import { Input } from "../ui/Input";
 import { cn } from "../../lib/utils";
 import ShareModal from "../chat/ShareModal";
 
+const formatSessionDate = (value) => {
+  if (!value) return "No date";
+  const parsedDate = new Date(value);
+  if (isNaN(parsedDate.getTime())) return "No date";
+  return parsedDate.toLocaleDateString();
+};
+
 const SidebarItem = (props) => {
   const { icon: Icon, label, to, active, collapsed } = props;
   return (
@@ -87,9 +94,7 @@ const SessionItem = ({ session, active, onPin, onRename, onArchive, onDelete, on
         <div className="flex-1 min-w-0">
           <span className="truncate block">{session.title || "Untitled Chat"}</span>
           <div className="mt-0.5 text-[10px] font-medium text-slate-400 flex items-center gap-2">
-            <span>
-              {session.created_at ? new Date(session.created_at).toLocaleDateString() : "No date"}
-            </span>
+            <span>{formatSessionDate(session.created_at)}</span>
             <span aria-hidden="true">•</span>
             <span>{session.message_count ?? 0} msgs</span>
           </div>
